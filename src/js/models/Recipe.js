@@ -20,7 +20,7 @@ export default class Recipe {
     }
     calcTime() {
         //Assuming time: 15 minutes per 3 ingredients.
-        const numIng = this.ingredients.lenght;
+        const numIng = this.ingredients.length;
         const periods = Math.ceil(numIng / 3);
         this.time = periods * 15;
     }
@@ -30,6 +30,8 @@ export default class Recipe {
     parseIngredients() {
         const unitsLong = ['tablespoons','tablespoon','ounces','ounce','teaspoons','teaspoon','cups','pounds'];
         const unitsShort = ['tbsp','tbsp','oz','oz','tsp','tsp','cup','pound'];
+        const units = [...unitsShort, 'kg', 'g'];
+
         const newIngredients = this.ingredients.map(el => {
             //1. Uniform units
             let ingredient = el.toLowerCase();
@@ -40,7 +42,7 @@ export default class Recipe {
             ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
 
             //3. Parce ingredients into count, unit and description
-            const arrIng = ingredient.split('');
+            const arrIng = ingredient.split(' ');
             const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
 
             let objIng;
@@ -49,8 +51,8 @@ export default class Recipe {
                 //IF there's a unit
                 const arrCount = arrIng.slice(0, unitIndex);
                 let count;
-                if (arrCount.lenght === 1) {
-                    count = eval(arrCount[0].replace('-','+'));
+                if (arrCount.length === 1) {
+                    count = eval(arrIng[0].replace('-', '+'));
                 } else {
                     count = eval(arrIng.slice(0, unitIndex).join('+'));
                 }
@@ -64,7 +66,7 @@ export default class Recipe {
                 objIng = {
                     count: parseInt(arrIng[0], 10),
                     unit: '',
-                    ingredient: arrIng.slice(1).join(' ')
+                    ingredient: arrIng.slice(1).join('')
                 }
             } else if (unitIndex === -1){
                 //NO unit, 1st element's a number

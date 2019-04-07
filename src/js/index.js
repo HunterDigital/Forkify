@@ -1,5 +1,6 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import { elements, clearLoader, renderLoader } from './views/base';
@@ -94,7 +95,8 @@ const controlRecipe = async () => {
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
 //Handling recipe button clicks
-elements.recipe.addEventListener("click", e => {
+elements.recipe.addEventListener('click', e => {
+    console.log(state.recipe);
     if (e.target.matches('.btn-decrease, .btn-decrease *')) {
         if (state.recipe.servings > 1) {
             //decrease button is clicked
@@ -106,5 +108,7 @@ elements.recipe.addEventListener("click", e => {
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
     }
-    console.log(state.recipe);
 });
+
+const l = new List();
+console.log(l);
